@@ -1,0 +1,64 @@
+import random
+import time
+
+# Constants
+MIN_OPERAND = 3
+MAX_OPERAND = 12
+OPERATORS = ["+", "-", "*"]
+
+TOTAL_PROBLEMS = 10
+
+
+def generate_problem():
+    """Generate a random arithmetic problem and its answer."""
+    left = random.randint(MIN_OPERAND, MAX_OPERAND)
+    right = random.randint(MIN_OPERAND, MAX_OPERAND)
+    operator = random.choice(OPERATORS)
+
+    expr = f"{left} {operator} {right}"
+    answer = eval(expr)
+    return expr, answer
+
+
+# Start of the quiz
+input("Press Enter to begin!")
+print("-----------------------------")
+
+start_time = time.time()
+wrong = 0
+
+for i in range(TOTAL_PROBLEMS):
+    expr, answer = generate_problem()
+
+    while True:
+        guess = input(f"Problem #{i + 1}: {expr} = ")
+
+        # Check if user wants to quit early
+        if guess.lower() in ["q", "quit", "exit"]:
+            print("Exiting quiz early...")
+            TOTAL_PROBLEMS = i  # Adjust total count
+            break
+
+        if guess == str(answer):
+            print("✅ Correct!\n")
+            break
+        else:
+            print("❌ Wrong, try again!\n")
+            wrong += 1
+
+    else:
+        # This runs only if the while loop is not broken (user quit)
+        break
+
+end_time = time.time()
+total_time = end_time - start_time
+correct = TOTAL_PROBLEMS - wrong
+accuracy = (correct / TOTAL_PROBLEMS * 100) if TOTAL_PROBLEMS else 0
+
+print("-----------------------------")
+print(f"✅ Correct answers: {correct}")
+print(f"❌ Wrong attempts:  {wrong}")
+print(f"🎯 Accuracy:        {accuracy:.2f}%")
+print(f"⏱️ Total time:      {total_time:.2f} seconds")
+print("-----------------------------")
+print("Thanks for playing! 🧠")
